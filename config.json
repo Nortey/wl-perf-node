@@ -1,0 +1,11 @@
+{
+	"host": "localhost",
+	"port": "10080",
+	"contextRoot": "/FormBasedAuthenticationProject",
+	"wlPlatformVersion": "6.0.5.00.20130906-1517",
+	"app": {"name": "NewApp", "version": "1.0", "environments": ["iphone"] },
+	"adapter": {"name": "TestAdapter", "procedure":"getStories", "parameters": [], "frequency": 1000},
+	
+	"numDevices": 100,
+	"simulationTime": 60000 
+}
