@@ -39,30 +39,37 @@ var _createDevice = function(){
 		return def; 
 	}
 
-	device.invokeAdapter = function(app, adapter){
+	device.invokeAdapter = function(app, adapter, beginTime){
 		var app = config.app;
 		var adapter = config.adapter;
 		var cookies = device.cookies;
 		var challenges = device.challenges;
 		var frequency = adapter.frequency;
+		var def = Deferred();
 
-		device.adapterInterval = setInterval(function(){
+		setTimeout(function(){
 			var startTime = new Date().getTime();
-
 			invokeAdapter(app, adapter, cookies, challenges).then(function(){
 				device.adapterCallTimes.push(new Date().getTime() - startTime);
+				def.resolve();
 			});
-		}, frequency);
+		}, beginTime);
+
+		return def; 
 	}
 
 	device.initAdapterCall = function(startTime){
+		var def = Deferred();
+
 		setTimeout(function(){
 			device.init().then(function(){
 				return device.invokeAdapter();
 			}).then(function(){
-				console.log("ALL COMPLETE");
+				def.resolve();
 			});
 		}, startTime);
+
+		return def;
 	}
 
 	return device;
@@ -149,7 +156,7 @@ function initUnauthorized(app, cookies){
 		res.on('data', function (data) {
 			data = data.replace("/*-secure-", "");
 			data = data.replace("*/", "");
-
+			
 			var challenges = JSON.parse(data);
 			def.resolve(setCookie, challenges);
 		});

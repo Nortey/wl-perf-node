@@ -8,11 +8,15 @@ http.globalAgent.maxSockets = config.numDevices + 1;
 
 http.createServer(function (req, res) {
 	if(req.url == "/"){
-		tests.multiDeviceInitTest(config.numDevices, config.simulationTime);
+		
 	}
 
 	res.writeHead(200, {'Content-Type': 'text/plain'});
 	res.end('Hello World\n');
 }).listen(3000, "127.0.0.1");
+
+//tests.multiDeviceInitTest(config.numDevices, config.simulationTime);
+tests.multiDeviceAdapterCallTest(config.numDevices, config.simulationTime);
+
 
 console.log('Server running at http://127.0.0.1:3000/');

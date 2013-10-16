@@ -24,7 +24,24 @@ var _multiDeviceInitTest = function(numDevices, simulationTime){
 	});
 };
 
-var _multiDeviceInitTestLogResults = function(devices){
+var _multiDeviceAdapterCallTest = function(numDevices, simulationTime){
+	var devices = [];
+	var deferreds = [];
+
+	for(var i=0; i<numDevices; i++){
+		var beginTime = Math.floor(Math.random()* (simulationTime-10000));
+	
+		var d = device.createDevice();	
+		devices.push(d);
+		deferreds.push(d.initAdapterCall(beginTime));
+	} 
+
+	Deferred.when.apply(Deferred, deferreds).done(function(){
+		_multiDeviceInitTestLogResults(devices);
+	});
+}
+
+/*var _multiDeviceInitTestLogResults = function(devices){
 	var averageInitTime = 0;
 	var maxInitTime = devices[0].initTime;
 	var minInitTime = devices[0].initTime;
@@ -42,9 +59,9 @@ var _multiDeviceInitTestLogResults = function(devices){
 	console.log("Max init Time: " + maxInitTime);
 	console.log("Min init Time: " + minInitTime);
 	console.log("--------------------------------------------");
-}
+}*/
 
-/*var multiDeviceInitTestLogResults = function(){
+var _multiDeviceInitTestLogResults = function(devices){
 	var averageInitTime = 0;
 	var maxInitTime = devices[0].initTime;
 	var minInitTime = devices[0].initTime;
@@ -55,7 +72,6 @@ var _multiDeviceInitTestLogResults = function(devices){
 	var maxAdapterCallTime = devices[0].adapterCallTimes[0];
 
 	for(var i=0; i<devices.length; i++){
-		clearInterval(devices[i].adapterInterval);
 
 		averageInitTime += devices[i].initTime;
 		maxInitTime = Math.max(devices[i].initTime, maxInitTime);
@@ -81,8 +97,9 @@ var _multiDeviceInitTestLogResults = function(devices){
 	console.log("Max Adapter Call Time: " + maxAdapterCallTime);
 	console.log("Min Adapter Call Time: " + minAdapterCallTime);
 	console.log("--------------------------------------------");
-}*/
+}
 
 module.exports = {
-	multiDeviceInitTest: _multiDeviceInitTest
+	multiDeviceInitTest: _multiDeviceInitTest,
+	multiDeviceAdapterCallTest: _multiDeviceAdapterCallTest
 };
